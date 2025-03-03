@@ -49,9 +49,14 @@ public class GreetingController {
         return greetingService.findGreetingById(id);
     }
 
-    // New endpoint to edit a greeting by ID
     @PutMapping("/{id}")
     public Optional<Greeting> updateGreeting(@PathVariable Long id, @RequestBody String newMessage) {
         return greetingService.updateGreeting(id, newMessage);
+    }
+
+    // New endpoint to delete a greeting by ID
+    @DeleteMapping("/{id}")
+    public boolean deleteGreeting(@PathVariable Long id) {
+        return greetingService.deleteGreeting(id);
     }
 }
