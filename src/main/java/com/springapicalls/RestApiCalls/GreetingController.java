@@ -18,6 +18,16 @@ public class GreetingController {
     public String getGreeting(){
         return greetingService.getGreeting();
     }
+
+    @GetMapping("/firstName")
+    public String getGreetingByFirstName(@RequestParam String firstName) {
+                return greetingService.getGreeting(firstName);
+            }
+
+           @GetMapping("/fullName")
+    public String getGreetingByFullName(@RequestParam String firstName, @RequestParam String lastName) {
+                return greetingService.getGreeting(firstName, lastName);
+            }
     @PutMapping
    public String putHello(@RequestBody String message) {
                return "Updated message: "+message;
