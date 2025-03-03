@@ -39,8 +39,18 @@ public class GreetingService {
         return greetingRepository.findAll();
     }
 
-    // New method to find a greeting by ID
     public Optional<Greeting> findGreetingById(Long id) {
         return greetingRepository.findById(id);
+    }
+
+    // New method to update a greeting by ID
+    public Optional<Greeting> updateGreeting(Long id, String newMessage) {
+        Optional<Greeting> optionalGreeting = greetingRepository.findById(id);
+        if (optionalGreeting.isPresent()) {
+            Greeting greeting = optionalGreeting.get();
+            greeting.setMessage(newMessage);
+            return Optional.of(greetingRepository.save(greeting));
+        }
+        return Optional.empty(); // Return empty if the greeting is not found
     }
 }

@@ -39,7 +39,6 @@ public class GreetingController {
         return greetingService.saveGreeting(message);
     }
 
-    // Endpoint to retrieve all saved greetings
     @GetMapping("/all")
     public List<Greeting> getAllGreetings() {
         return greetingService.getAllGreetings();
@@ -48,5 +47,11 @@ public class GreetingController {
     @GetMapping("/{id}")
     public Optional<Greeting> findGreetingById(@PathVariable Long id) {
         return greetingService.findGreetingById(id);
+    }
+
+    // New endpoint to edit a greeting by ID
+    @PutMapping("/{id}")
+    public Optional<Greeting> updateGreeting(@PathVariable Long id, @RequestBody String newMessage) {
+        return greetingService.updateGreeting(id, newMessage);
     }
 }
