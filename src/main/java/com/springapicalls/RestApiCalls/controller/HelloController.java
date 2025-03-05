@@ -1,4 +1,4 @@
-package com.springapicalls.RestApiCalls;
+package com.springapicalls.RestApiCalls.controller;
 
 import org.springframework.web.bind.annotation.*;
 

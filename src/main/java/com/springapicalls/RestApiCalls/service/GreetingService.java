@@ -10,55 +10,46 @@ import java.util.Optional;
 
 @Service
 public class GreetingService {
-
     private final GreetingRepository greetingRepository;
-
-    @Autowired
     public GreetingService(GreetingRepository greetingRepository) {
         this.greetingRepository = greetingRepository;
     }
-
-    public String getGreeting() {
-        return "Hello World";
-    }
-
-    public String getGreeting(String firstName) {
-        return "Hello, " + firstName + "!";
-    }
-
-    public String getGreeting(String firstName, String lastName) {
-        return "Hello, " + firstName + " " + lastName + "!";
-    }
-
     public Greeting saveGreeting(String message) {
         Greeting greeting = new Greeting(message);
         return greetingRepository.save(greeting);
     }
 
+    public String getGreeting(String firstName, String lastName) {
+        if (firstName != null && lastName != null) {
+            return "{\"message\": \"Hello, " + firstName + " " + lastName + "!\"}";
+        } else if (firstName != null) {
+            return "{\"message\": \"Hello, " + firstName + "!\"}";
+        } else if (lastName != null) {
+            return "{\"message\": \"Hello, " + lastName + "!\"}";
+        } else {
+            return "{\"message\": \"Hello, World!\"}";
+        }
+    }
+    public Optional<Greeting> getGreetingById(Long id) {
+        return greetingRepository.findById(id);
+    }
     public List<Greeting> getAllGreetings() {
         return greetingRepository.findAll();
     }
 
-    public Optional<Greeting> findGreetingById(Long id) {
-        return greetingRepository.findById(id);
-    }
 
     public Optional<Greeting> updateGreeting(Long id, String newMessage) {
-        Optional<Greeting> optionalGreeting = greetingRepository.findById(id);
-        if (optionalGreeting.isPresent()) {
-            Greeting greeting = optionalGreeting.get();
+        return greetingRepository.findById(id).map(greeting -> {
             greeting.setMessage(newMessage);
-            return Optional.of(greetingRepository.save(greeting));
-        }
-        return Optional.empty(); // Return empty if the greeting is not found
+            return greetingRepository.save(greeting);
+        });
     }
 
-    // New method to delete a greeting by ID
     public boolean deleteGreeting(Long id) {
         if (greetingRepository.existsById(id)) {
             greetingRepository.deleteById(id);
-            return true; // Return true if deletion was successful
+            return true;
         }
-        return false; // Return false if the greeting was not found
+        return false;
     }
 }
